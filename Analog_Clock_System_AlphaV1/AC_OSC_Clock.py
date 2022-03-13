@@ -168,7 +168,7 @@ try:
         if hours_hand == float(0.12):
             client.send_message("/avatar/parameters/AC_hh", float(0.11))
             time.sleep(1)
-            client.send_message("/avatar/parameters/AC_hh", float(0.0))
+            client.send_message("/avatar/parameters/AC_hh", float(0.6))
 
         else:
             client.send_message("/avatar/parameters/AC_hh", float(hours_hand))
@@ -176,7 +176,7 @@ try:
         if minutes_hand == float(0.59):
             client.send_message("/avatar/parameters/AC_mh", float(0.59))
             time.sleep(1)
-            client.send_message("/avatar/parameters/AC_mh", float(0.0))
+            client.send_message("/avatar/parameters/AC_mh", float(0.6))
 
         else:
             client.send_message("/avatar/parameters/AC_mh", float(minutes_hand))
@@ -184,7 +184,7 @@ try:
         if seconds_hand == float(0.59):
             client.send_message("/avatar/parameters/AC_sc", float(0.59))
             time.sleep(1)
-            client.send_message("/avatar/parameters/AC_sc", float(0.0))
+            client.send_message("/avatar/parameters/AC_sc", float(0.6))
 
         else:
             client.send_message("/avatar/parameters/AC_sc", float(seconds_hand))
