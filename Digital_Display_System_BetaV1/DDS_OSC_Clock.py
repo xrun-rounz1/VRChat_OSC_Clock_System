@@ -8,7 +8,7 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Digital Display System Beta Version 1.1
+Digital Display System Beta Version 1.2
 
 2022/03/14 : 風庭ゆい
 

@@ -8,7 +8,7 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Analog Clock System Alpha Version 1.0
+Analog Clock System Alpha Version 1.1
 
 2022/03/13 : 風庭ゆい
 
@@ -27,7 +27,7 @@ print(msg)
 
 print('初期化します', end="")
 
-#初期化を実行するよ、一度0を送信してからもう一度表示させるよ
+#初期化を実行するよ
 client.send_message("/avatar/parameters/AC_hh", float(0.0))
 client.send_message("/avatar/parameters/AC_mh", float(0.0))
 client.send_message("/avatar/parameters/AC_sc", float(0.0))
@@ -152,7 +152,6 @@ try:
         #datetimeモジュールからPCの時刻を取得するよ
         dt_now = datetime.datetime.now()
 
-        #時、分、秒で分けてゼロ埋めするよ
         hours = dt_now.strftime('%H')
         minutes = dt_now.strftime('%M')
         seconds = dt_now.strftime('%S')
