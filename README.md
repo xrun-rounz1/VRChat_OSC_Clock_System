@@ -8,12 +8,15 @@
 
 [![thumbnail](https://pbs.twimg.com/ext_tw_video_thumb/1503126781372428290/pu/img/Gy-_ce05jCOU7y_P.jpg)](https://twitter.com/Yui0471/status/1503126841082593280/video/1)
 
-[![thumbnail](https://pbs.twimg.com/ext_tw_video_thumb/1498903961688223745/pu/img/L2M_o-KYn5PDNBoI.jpg)](https://twitter.com/Yui0471/status/1498904140004859909/video/1)
+[![thumbnail](https://pbs.twimg.com/profile_images/1203159557574295552/gr1Dd7lF_normal.jpg)](https://twitter.com/Yui0471/status/1499048736651366400)
+
+[![thumbnail](https://pbs.twimg.com/ext_tw_video_thumb/1499353688879792134/pu/img/IlerDZ5EB0G2FJcb.jpg)](https://twitter.com/Yui0471/status/1499353831645548552/video/1)
 
 
 # Requirement
 
 * Windows 10 以降想定
+
 
 ## Using Python
 
