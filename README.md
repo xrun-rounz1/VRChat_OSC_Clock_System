@@ -18,7 +18,7 @@
 * Windows 10 以降想定
 
 
-## Using Python
+## Pythonを使用する場合
 
 * Python 3.8.2
 
