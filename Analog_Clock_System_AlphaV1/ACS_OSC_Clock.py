@@ -8,7 +8,7 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Analog Clock System Alpha Version 1.1
+Analog Clock System Alpha Version 1.1.1
 
 2022/03/13 : 風庭ゆい
 
@@ -31,18 +31,6 @@ print('初期化します', end="")
 client.send_message("/avatar/parameters/AC_hh", float(0.0))
 client.send_message("/avatar/parameters/AC_mh", float(0.0))
 client.send_message("/avatar/parameters/AC_sc", float(0.0))
-
-time.sleep(0.2)
-
-client.send_message("/avatar/parameters/AC_hh", float(0.31))
-client.send_message("/avatar/parameters/AC_mh", float(0.31))
-client.send_message("/avatar/parameters/AC_sc", float(0.31))
-
-time.sleep(0.2)
-
-client.send_message("/avatar/parameters/AC_hh", float(0.6))
-client.send_message("/avatar/parameters/AC_mh", float(0.6))
-client.send_message("/avatar/parameters/AC_sc", float(0.6))
 
 print('\rOSC送信を開始します\n')
 
@@ -163,30 +151,10 @@ try:
         print("現在時刻(debug):", hours_hand,":",minutes_hand,":",seconds_hand)
 
         #とんでけーー！！
-
-        if hours_hand == float(0.12):
-            client.send_message("/avatar/parameters/AC_hh", float(0.11))
-            time.sleep(1)
-            client.send_message("/avatar/parameters/AC_hh", float(0.6))
-
-        else:
-            client.send_message("/avatar/parameters/AC_hh", float(hours_hand))
-
-        if minutes_hand == float(0.59):
-            client.send_message("/avatar/parameters/AC_mh", float(0.59))
-            time.sleep(1)
-            client.send_message("/avatar/parameters/AC_mh", float(0.6))
-
-        else:
-            client.send_message("/avatar/parameters/AC_mh", float(minutes_hand))
-
-        if seconds_hand == float(0.59):
-            client.send_message("/avatar/parameters/AC_sc", float(0.59))
-            time.sleep(1)
-            client.send_message("/avatar/parameters/AC_sc", float(0.6))
-
-        else:
-            client.send_message("/avatar/parameters/AC_sc", float(seconds_hand))
+        
+        client.send_message("/avatar/parameters/AC_hh", float(hours_hand))
+        client.send_message("/avatar/parameters/AC_mh", float(minutes_hand))
+        client.send_message("/avatar/parameters/AC_sc", float(seconds_hand))
 
 except KeyboardInterrupt:
 
