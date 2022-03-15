@@ -10,14 +10,14 @@ VRChat Open Sound Control
 
 Digital Display System Beta Version 1.2
 
-2022/03/14 : 風庭ゆい
-
-注 : 対応したアバターのみ効力を発揮します
+最終更新 : 2022/03/15
 
 //////////////////////////////////////////
 """
 
-#ipとポートをセットするよ
+#作成 : 風庭ゆい
+
+#ipとポートをセット
 ip = "127.0.0.1"
 port = 9000
 
@@ -27,7 +27,7 @@ print(msg)
 
 print('初期化します', end="")
 
-#初期化を実行するよ、一度0を送信してからもう一度表示させるよ
+#初期化を実行
 client.send_message("/avatar/parameters/DD_thp", 0)
 client.send_message("/avatar/parameters/DD_hp", 0)
 client.send_message("/avatar/parameters/DD_tp", 0)
@@ -43,10 +43,10 @@ try:
 
     while True:
 
-        #datetimeモジュールからPCの時刻を取得するよ
+        #PCのローカル時間を取得
         dt_now = datetime.datetime.now()
 
-        #時、分、秒で分けてゼロ埋めするよ
+        #時、分、秒で分けてゼロ埋め
         hours = dt_now.strftime('%H')
         minutes = dt_now.strftime('%M')
         seconds = dt_now.strftime('%S')
@@ -55,7 +55,7 @@ try:
         num_m = minutes.zfill(2)
         num_s = seconds.zfill(2)
 
-        #それぞれの桁を変数に入れるよ
+        #それぞれの桁を変数に
         htp = num_h[-2]
         hop = num_h[-1]
 
@@ -73,14 +73,12 @@ try:
         client.send_message("/avatar/parameters/DD_tp", int(mtp))
         client.send_message("/avatar/parameters/DD_op", int(mop))
 
-        #飛んでったから一秒待つよ
-        #ここを変更で送信頻度を変更できるよ
+        #一秒待機
         time.sleep(1)
 
 except KeyboardInterrupt:
 
-    #Ctrl+Cが押された！
-    #全部のパラメータを0にしてから非表示にするよ
+    #終了時初期化
     client.send_message("/avatar/parameters/DD_thp", 0)
     client.send_message("/avatar/parameters/DD_hp", 0)
     client.send_message("/avatar/parameters/DD_tp", 0)

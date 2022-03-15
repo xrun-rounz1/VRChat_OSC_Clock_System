@@ -8,16 +8,16 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Analog Clock System Alpha Version 1.1.1
+Analog Clock System Alpha Version 1.1
 
-2022/03/13 : 風庭ゆい
-
-注 : 対応したアバターのみ効力を発揮します
+最終更新 : 2022/03/15
 
 //////////////////////////////////////////
 """
 
-#ipとポートをセットするよ
+#作成 : 風庭ゆい
+
+#ipとポートをセット
 ip = "127.0.0.1"
 port = 9000
 
@@ -27,7 +27,7 @@ print(msg)
 
 print('初期化します', end="")
 
-#初期化を実行するよ
+#初期化を実行
 client.send_message("/avatar/parameters/AC_hh", float(0.0))
 client.send_message("/avatar/parameters/AC_mh", float(0.0))
 client.send_message("/avatar/parameters/AC_sc", float(0.0))
@@ -137,7 +137,7 @@ try:
 
         time.sleep(1)
 
-        #datetimeモジュールからPCの時刻を取得するよ
+        #PCのローカル時間を取得
         dt_now = datetime.datetime.now()
 
         hours = dt_now.strftime('%H')
@@ -151,15 +151,13 @@ try:
         print("現在時刻(debug):", hours_hand,":",minutes_hand,":",seconds_hand)
 
         #とんでけーー！！
-        
         client.send_message("/avatar/parameters/AC_hh", float(hours_hand))
         client.send_message("/avatar/parameters/AC_mh", float(minutes_hand))
         client.send_message("/avatar/parameters/AC_sc", float(seconds_hand))
 
 except KeyboardInterrupt:
 
-    #Ctrl+Cが押された！
-    #全部のパラメータを0にしてから非表示にするよ
+    #終了時初期化
     client.send_message("/avatar/parameters/AC_hh", float(0.0))
     client.send_message("/avatar/parameters/AC_mh", float(0.0))
     client.send_message("/avatar/parameters/AC_sc", float(0.0))
