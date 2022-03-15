@@ -1,6 +1,6 @@
-【Analog Clock System Alphatest Version 1.1】
+【Analog Clock System Betatest Version 1.0】
 
-最終更新 : 2022/03/14 風庭ゆい
+最終更新 : 2022/03/15 風庭ゆい
 開発協力 : 味醂
 
 
@@ -26,7 +26,7 @@
 
 【同梱ファイル】----------------------------
 
-　Analog_Clock_system_AlphaV1
+　Analog_Clock_system_BetaV1
 
 　・ACS_OSC_Clock.exe
 　　OSC送信を担当するアプリケーションです。
@@ -72,7 +72,7 @@
 
 1.VRCSDK3とアバターのパッケージ、その他必要なアセットをインポートしてください。
 
-2.同梱の[Analog_Clock_System_AlphatestV1.unitypackage]をインポートします。
+2.同梱の[Analog_Clock_System_BetatestV1.unitypackage]をインポートします。
 
 3.Asset以下にAnalog_Clockファイルがセットアップされますので参照してください。
 
@@ -124,6 +124,9 @@
 -テクスチャの大幅変更
 -テクスチャデータを同梱、編集可能に
 
+〇2022/03/15 【Betatest Version 1.0】
+-betaへ移行
+-アプリケーションの表示を変更
 
 【開発環境】----------------------------
 

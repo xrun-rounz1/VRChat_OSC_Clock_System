@@ -8,7 +8,7 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Analog Clock System Alpha Version 1.1
+Analog Clock System Beta Version 1.0
 
 最終更新 : 2022/03/15
 
@@ -36,7 +36,7 @@ print('\rOSC送信を開始します\n')
 
 print("set_ip: ", ip, "\nset_port: ", port, "\n")
 
-print('Ctrl+Cで終了してください\n')
+print('Ctrl+Cで終了できます\n')
 
 #浮動小数点数演算はなんか知らないけどうまくいかないので良い方法思いつくまでゴリ押す
 NUMBER = {
@@ -135,8 +135,6 @@ try:
 
     while True:
 
-        time.sleep(1)
-
         #PCのローカル時間を取得
         dt_now = datetime.datetime.now()
 
@@ -148,12 +146,14 @@ try:
         minutes_hand = NUMBER[int(minutes)]
         seconds_hand = NUMBER[int(seconds)]
 
-        print("現在時刻(debug):", hours_hand,":",minutes_hand,":",seconds_hand)
+        print("\r現在時刻:", hours,":",minutes,":",seconds, end="")
 
         #とんでけーー！！
         client.send_message("/avatar/parameters/AC_hh", float(hours_hand))
         client.send_message("/avatar/parameters/AC_mh", float(minutes_hand))
         client.send_message("/avatar/parameters/AC_sc", float(seconds_hand))
+
+        time.sleep(1)
 
 except KeyboardInterrupt:
 

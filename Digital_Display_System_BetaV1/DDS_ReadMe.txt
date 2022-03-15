@@ -1,6 +1,6 @@
 【Digital Display System Betatest Version 1.2】
 
-最終更新 : 2022/03/14 風庭ゆい
+最終更新 : 2022/03/15 風庭ゆい
 開発協力 : 味醂
 
 
