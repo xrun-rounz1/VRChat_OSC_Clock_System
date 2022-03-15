@@ -37,7 +37,7 @@ print('\rOSC送信を開始します\n')
 
 print("set_ip: ", ip, "\nset_port: ", port, "\n")
 
-print('Ctrl+Cで終了してください\n')
+print('Ctrl+Cで終了できます\n')
 
 try:
 
