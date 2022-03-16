@@ -2,6 +2,7 @@ from pythonosc.udp_client import SimpleUDPClient
 import time
 import sys
 import datetime
+import math
 
 msg = """
 //////////////////////////////////////////
@@ -38,32 +39,32 @@ print("set_ip: ", ip, "\nset_port: ", port, "\n")
 
 print('Ctrl+Cで終了できます\n')
 
-NUMBER_HOURS = {
-    0:0.0,
-    1:0.01,
-    2:0.02,
-    3:0.03,
-    4:0.04,
-    5:0.05,
-    6:0.06,
-    7:0.07,
-    8:0.08,
-    9:0.09,
-    10:0.10,
-    11:0.11,
-    12:0.12,
-    13:0.01,
-    14:0.02,
-    15:0.03,
-    16:0.04,
-    17:0.05,
-    18:0.06,
-    19:0.07,
-    20:0.08,
-    21:0.09,
-    22:0.10,
-    23:0.11,
-    24:0.12
+HOURS_NOTATION = {
+    0:0,
+    1:1,
+    2:2,
+    3:3,
+    4:4,
+    5:5,
+    6:6,
+    7:7,
+    8:8,
+    9:9,
+    10:10,
+    11:11,
+    12:12,
+    13:1,
+    14:2,
+    15:3,
+    16:4,
+    17:5,
+    18:6,
+    19:7,
+    20:8,
+    21:9,
+    22:10,
+    23:11,
+    24:12
 }
 
 try:
@@ -77,11 +78,30 @@ try:
         minutes = dt_now.minute
         seconds = dt_now.second
 
-        hours_hand = NUMBER_HOURS[hours]
+        #12時間表記をintで取りたい
+        #strftime(%h)で取るのもなんかなぁ。。。
+        #もっと良い方法があるはず、思いつくまでとりあえずこれで
+        hours_notation = HOURS_NOTATION[hours]
+
         minutes_hand = minutes / 100
         seconds_hand = seconds / 100
 
-        print("\r現在時刻:", hours,":",minutes,":",seconds, end="")
+        #上書きするとなぜか実際の送信時間と一秒違う、なんで？？
+        #あと上書きしてるせいで前の表示が残るようになったのでとりあえず垂れ流すようにする
+        #print("\r現在時刻:", hours,":",minutes,":",seconds, end="")
+        print("現在時刻:", hours,":",minutes,":",seconds)
+
+        #hourを60に分割
+        min_hours = math.floor(minutes / 12)
+
+        if hours_notation != 12:
+            hours_hh = hours / 20
+
+        else:
+            hours_hh = 0
+
+        hh = hours_hh + (min_hours / 100)
+        hours_hand = round(hh, 2)
 
         #とんでけーー！！
         client.send_message("/avatar/parameters/AC_hh", hours_hand)
