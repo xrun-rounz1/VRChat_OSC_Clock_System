@@ -47,7 +47,7 @@ pip install python-osc
 # Author
 
 * 風庭ゆい
-* 開発協力 : 味醂
+* 開発協力 : 味醂, Rounz
 
 
 # License

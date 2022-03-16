@@ -1,6 +1,6 @@
-【Analog Clock System Betatest Version 1.0】
+【Analog Clock System Betatest Version 1.1】
 
-最終更新 : 2022/03/15 風庭ゆい
+最終更新 : 2022/03/16 風庭ゆい
 開発協力 : 味醂, Rounz
 
 
@@ -33,10 +33,6 @@
 　　１秒おきに現在時刻を送信します。
 　　使用する際はウインドウの指示に従ってください。
 
-　・ACS_OSC_Clock.py
-　　exeアプリケーションのコンパイル前のスクリプトです。
-　　Python3とPython-OSCが導入されている機器で動作します。
-
 　・Analog_Clock_AlphatestV1.unitypackage
 　　アバターセットアップ用UnityPackageです。
 　　以下に記述するセットアップにて使用します。
@@ -46,6 +42,10 @@
 
 　・texture
 　　改変用テクスチャファイルです。
+
+　・script
+　　exeアプリケーションのコンパイル前のスクリプトです。
+　　Python3とPython-OSCが導入されている機器で動作します。
 
 
 【基本仕様】----------------------------
@@ -74,7 +74,7 @@
 
 2.同梱の[Analog_Clock_System_BetatestV1.unitypackage]をインポートします。
 
-3.Asset以下にAnalog_Clockファイルがセットアップされますので参照してください。
+3.Asset以下にYuis_Miniature_Garden/Analog_Clockファイルがセットアップされますので参照してください。
 
 4.[Analog_Clock.prefab]ファイルをヒエラルキーにドラッグアンドドロップし、
 　アバターのルートオブジェクトの子に置いてください。
@@ -127,6 +127,11 @@
 〇2022/03/15 【Betatest Version 1.0】
 -betaへ移行
 -アプリケーションの表示を変更
+
+〇2022/03/16 【Betatest Version 1.1】
+-アプリケーション内の処理を大幅変更、最適化(Rounzさんありがとう)
+-DDSとファイル名が被らないように修正
+
 
 【開発環境】----------------------------
 

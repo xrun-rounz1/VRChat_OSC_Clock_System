@@ -8,9 +8,9 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Digital Display System Beta Version 1.2
+Digital Display System Beta Version 1.3
 
-最終更新 : 2022/03/15
+最終更新 : 2022/03/16
 
 //////////////////////////////////////////
 """
@@ -33,9 +33,9 @@ client.send_message("/avatar/parameters/DD_hp", 0)
 client.send_message("/avatar/parameters/DD_tp", 0)
 client.send_message("/avatar/parameters/DD_op", 0)
 
-print('\rOSC送信を開始します\n')
+print('\rOSC送信を開始します')
 
-print("set_ip: ", ip, "\nset_port: ", port, "\n")
+print("set_IP:", ip, ":", port, "\n")
 
 print('Ctrl+Cで終了できます\n')
 

@@ -1,7 +1,7 @@
-【Digital Display System Betatest Version 1.2】
+【Digital Display System Betatest Version 1.3】
 
-最終更新 : 2022/03/15 風庭ゆい
-開発協力 : 味醂
+最終更新 : 2022/03/16 風庭ゆい
+開発協力 : 味醂, Rounz
 
 
 【はじめに】----------------------------
@@ -33,10 +33,6 @@
 　　１秒おきに現在時刻を送信します。
 　　使用する際はウインドウの指示に従ってください。
 
-　・DDS_OSC_Clock.py
-　　exeアプリケーションのコンパイル前のスクリプトです。
-　　Python3とPython-OSCが導入されている機器で動作します。
-
 　・Digital_Display_System_betatestV1.unitypackage
 　　アバターセットアップ用UnityPackageです。
 　　以下に記述するセットアップにて使用します。
@@ -46,6 +42,10 @@
 
 　・texture
 　　改変用テクスチャファイルです。
+
+　・script
+　　exeアプリケーションのコンパイル前のスクリプトです。
+　　Python3とPython-OSCが導入されている機器で動作します。
 
 
 【基本仕様】----------------------------
@@ -75,7 +75,7 @@
 
 2.同梱の[Digital_Display_System_betatestV1.unitypackage]をインポートします。
 
-3.Asset以下にDD_Watch_Systemファイルがセットアップされますので参照してください。
+3.Asset以下にYuis_Miniature_Garden/Digital_displayファイルがセットアップされますので参照してください。
 
 4.[Digital_Display.prefab]ファイルをヒエラルキーにドラッグアンドドロップし、
 　アバターのルートオブジェクトの子に置いてください。
@@ -143,6 +143,11 @@
 -テクスチャを整理。
 -UVスクロールの数値変更、アニメーションファイルの置き換え。
 -AIファイルの同梱。
+
+〇2022/03/16 【Betatest Version 1.3】
+-Stableに向けてファイル名の調整。
+-ACSとDDSを一緒にインポートしたとき上書きされてしまうのを修正。
+-アプリケーションの表示を簡素にしました。
 
 
 【実装検討リスト】----------------------------

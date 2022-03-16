@@ -9,9 +9,9 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Analog Clock System Beta Version 1.0
+Analog Clock System Beta Version 1.1
 
-最終更新 : 2022/03/15
+最終更新 : 2022/03/16
 
 //////////////////////////////////////////
 """
@@ -33,39 +33,11 @@ client.send_message("/avatar/parameters/AC_hh", float(0.0))
 client.send_message("/avatar/parameters/AC_mh", float(0.0))
 client.send_message("/avatar/parameters/AC_sc", float(0.0))
 
-print('\rOSC送信を開始します\n')
+print('\rOSC送信を開始します')
 
-print("set_ip: ", ip, "\nset_port: ", port, "\n")
+print("set_IP:", ip, ":", port, "\n")
 
 print('Ctrl+Cで終了できます\n')
-
-HOURS_NOTATION = {
-    0:0,
-    1:1,
-    2:2,
-    3:3,
-    4:4,
-    5:5,
-    6:6,
-    7:7,
-    8:8,
-    9:9,
-    10:10,
-    11:11,
-    12:12,
-    13:1,
-    14:2,
-    15:3,
-    16:4,
-    17:5,
-    18:6,
-    19:7,
-    20:8,
-    21:9,
-    22:10,
-    23:11,
-    24:12
-}
 
 try:
 
@@ -74,27 +46,20 @@ try:
         #PCのローカル時間を取得
         dt_now = datetime.datetime.now()
 
-        hours = dt_now.hour
+        #hours = dt_now.hour
+        hours = int(dt_now.strftime('%I'))
         minutes = dt_now.minute
         seconds = dt_now.second
-
-        #12時間表記をintで取りたい
-        #strftime(%h)で取るのもなんかなぁ。。。
-        #もっと良い方法があるはず、思いつくまでとりあえずこれで
-        hours_notation = HOURS_NOTATION[hours]
 
         minutes_hand = minutes / 100
         seconds_hand = seconds / 100
 
-        #上書きするとなぜか実際の送信時間と一秒違う、なんで？？
-        #あと上書きしてるせいで前の表示が残るようになったのでとりあえず垂れ流すようにする
-        #print("\r現在時刻:", hours,":",minutes,":",seconds, end="")
-        print("現在時刻:", hours,":",minutes,":",seconds)
+        print("\r現在時刻:", dt_now.strftime('%I : %M : %S (%p)'), end="")
 
         #hourを60に分割
         min_hours = math.floor(minutes / 12)
 
-        if hours_notation != 12:
+        if hours != 12:
             hours_hh = hours / 20
 
         else:
