@@ -21,6 +21,7 @@
 ## Pythonを使用する場合
 
 * Python 3.8.2
+* python-osc 1.8.0
 
 ```bash
 pip install python-osc
