@@ -50,11 +50,12 @@ try:
         hours = int(dt_now.strftime('%I'))
         minutes = dt_now.minute
         seconds = dt_now.second
+        meridian = dt_now.strftime('%p')
 
         minutes_hand = minutes / 100
         seconds_hand = seconds / 100
 
-        print("\r現在時刻:", dt_now.strftime('%I : %M : %S (%p)'), end="")
+        print("\r現在時刻:", hours, ":", minutes, ":", seconds,".", meridian,".", end="")
 
         #hourを60に分割
         min_hours = math.floor(minutes / 12)
