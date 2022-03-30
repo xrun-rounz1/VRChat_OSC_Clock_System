@@ -9,13 +9,13 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Analog Clock System Stable Version 2.0
+Analog Clock System Stable Version 2.0.1
 
 //////////////////////////////////////////
 """
 
 #作成 : 風庭ゆい
-#最終更新 : 2022/03/16
+#最終更新 : 2022/03/31
 
 #ipとポートをセット
 ip = "127.0.0.1"
@@ -45,8 +45,7 @@ try:
         #PCのローカル時間を取得
         dt_now = datetime.datetime.now()
 
-        #hours = dt_now.hour
-        hours = int(dt_now.strftime('%I'))
+        hours = dt_now.hour % 12
         minutes = dt_now.minute
         seconds = dt_now.second
         meridian = dt_now.strftime('%p')
