@@ -5,6 +5,7 @@ import threading
 import sys
 import datetime
 import math
+import ipaddress
 
 msg = """
 //////////////////////////////////////////
@@ -23,39 +24,45 @@ AC_hh = "AC_hh"
 AC_mh = "AC_mh"
 AC_sc = "AC_sc"
 
+buttonflag = False
+
 layout = [
     [
-        sg.Text("IP"), sg.InputText("127", key="ip1", size=(3,1)),
-        sg.Text("."), sg.InputText("0", key="ip2", size=(3,1)),
-        sg.Text("."), sg.InputText("0", key="ip3", size=(3,1)),
-        sg.Text("."), sg.InputText("1", key="ip4", size=(3,1))
+        sg.Text("IP", size=(6,1)), sg.InputText("127.0.0.1", key="ip", size=(20,1))
     ],
 
     [
-        sg.Text("Port"), sg.InputText("9000", key="port", size=(4,1))
+        sg.Text("Port", size=(6,1)), sg.InputText("9000", key="port", size=(20,1))
     ],
-
-    [],
-
-    [sg.Text("Advanced Settings")],
-
-    [sg.Text("時", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_hh", key="hh")],
-
-    [sg.Text("分", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_mh", key="mh")],
-
-    [sg.Text("秒", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_sc", key="sc")],
 
     [
-        sg.Submit(button_text="設定を反映する", key="settings"),
-        sg.Text("", size=(20,1), key="paramtext")
+        sg.Submit(button_text="設定を反映", key="settings"),
+        sg.Text("設定中のIPアドレス:ポート番号 ▷"),
+        sg.Text("127.0.0.1:9000", size=(15,1), key="paramtext")
     ],
+
+    [
+        sg.Text("Advanced Settings"),
+        sg.Text(" 【送信するパラメータを変更します】")
+    ],
+
+    [sg.Text("時", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_hh", key="hh", size=(30,1))],
+
+    [sg.Text("分", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_mh", key="mh", size=(30,1))],
+
+    [sg.Text("秒", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_sc", key="sc", size=(30,1))],
 
     [],
 
     [
         sg.Button("送信開始", key="startbutton"),
-        sg.Button("送信停止", key="stopbutton"),
-        sg.Text("", size=(20,1), key="sstext")
+        sg.Text("送信停止中", size=(20,1), key="sstext")
+    ],
+
+    [
+        sg.Text("", key="hh"),
+        sg.Text("", key="mh"),
+        sg.Text("", key="sc")
     ]
 
 ]
@@ -125,67 +132,104 @@ if __name__ == "__main__":
         r.ROOP = True
         r.start()
 
+
     def changeEvent(event):
         pass
+
 
     def finishEvent(event):
         r.ROOP = False
         window.close()
         sys.exit()
 
-    def is_integer(n):
-        try:
-            float(n)
 
-        except ValueError:
-            return False
+    def isalnum_ascii(s):
+        str_list = list(s)
 
-        else:
-            return float(n).is_integer()
+        for i in str_list:
+            if not i == "_":
+                if i.isalnum() and i.isascii():
+                    str_list[str_list.index(i)] = 1
 
-    def ip_check(values):
-
-        ip_list = [
-            values["ip1"],
-            values["ip2"],
-            values["ip3"],
-            values["ip4"]
-        ]
-
-        for i in ip_list:
-            if is_integer(i) and 3 >= len(i):
-                ip_set = ip_list[0] + "." + ip_list[1] + "." + ip_list[2] + "." + ip_list[3]
-
-                ip = str(ip_set)
-                return ip
+                else:
+                    str_list[str_list.index(i)] = 0
 
             else:
-                sg.popup("エラーが発生しました！\n【IPに使用できない値が含まれています】")
+                str_list[str_list.index(i)] = 1
 
-                window["ip1"].update("127")
-                window["ip2"].update("0")
-                window["ip3"].update("0")
-                window["ip4"].update("1")
+        if not 0 in str_list:
+            return True
 
+        return False
+
+
+    def ip_check(values): #IPv4が有効かどうか
+        try:
+            ip_set = ipaddress.ip_address(values["ip"])
+
+            if type(ip_set) is ipaddress.IPv4Address:
+                ip = str(ip_set)
+
+            else:
+                sg.popup("エラーが発生しました！\n【このIPは使用できません】")
+                window["ip"].update("127.0.0.1")
                 ip = "127.0.0.1"
-                return ip
 
-    def port_check(values):
+        except ValueError:
+            sg.popup("エラーが発生しました！\n【IPに使用できない値が含まれています】")
+            window["ip"].update("127.0.0.1")
+            ip = "127.0.0.1"
 
-        if is_integer(values["port"]) and 4 >= len(values["port"]):
-            port = int(values["port"])
-            return port
+        finally:
+            return ip
 
-        else:
-            sg.popup("エラーが発生しました！\n【PORTに使用できない値が含まれています】")
+
+    def port_check(values): #ポート番号が有効かどうか
+        try:
+            port_set = int(values["port"])
+
+            if 0 <= port_set <= 65535:
+                port = port_set
+
+            else:
+                sg.popup("エラーが発生しました！\n【このポート番号は無効です】")
+
+                window["port"].update("9000")
+                port = 9000
+
+        except ValueError:
+            sg.popup("エラーが発生しました！\n【Portに使用できない値が含まれています】")
 
             window["port"].update("9000")
             port = 9000
 
+        finally:
             return port
 
-    def str_check(values):
 
+    def str_check(values): #パラメータが有効かどうか
+        if parameter_check(values):
+            hh = values["hh"]
+            mh = values["mh"]
+            sc = values["sc"]
+
+            return hh, mh, sc
+
+        else:
+            sg.popup("エラーが発生しました！\n【Parametersに使用できない文字列が含まれています】")
+
+            window["hh"].update("AC_hh")
+            window["mh"].update("AC_mh")
+            window["sc"].update("AC_sc")
+
+            hh = "AC_hh"
+            mh = "AC_mh"
+            sc = "AC_sc"
+
+            return hh, mh, sc
+            
+
+    def parameter_check(values):
         param_list = [
             values["hh"],
             values["mh"],
@@ -193,25 +237,13 @@ if __name__ == "__main__":
         ]
 
         for i in param_list:
-            if i.isascii():
-                hh = param_list[0]
-                mh = param_list[1]
-                sc = param_list[2]
+            if not isalnum_ascii(i):
+                return False
+                
+            if " " in i:
+                return False
 
-                return hh, mh, sc
-
-            else:
-                sg.popup("エラーが発生しました！\n【parametersに使用できない文字列が含まれています】")
-
-                window["hh"].update("AC_hh")
-                window["mh"].update("AC_mh")
-                window["sc"].update("AC_sc")
-
-                hh = "AC_hh"
-                mh = "AC_mh"
-                sc = "AC_sc"
-
-                return hh, mh, sc
+        return True
 
 
 while True:
@@ -222,11 +254,10 @@ while True:
     if event is None:
         break
 
-    if event == sg.WINDOW_CLOSED:
+    if event == sg.WINDOW_CLOSED: #ウインドウの×ボタン
         break
 
-    if event == "settings":
-
+    if event == "settings": #設定反映ボタン
         ip = ip_check(values)
         port = port_check(values)
         window["paramtext"].update(ip + ":" + str(port))
@@ -241,21 +272,24 @@ while True:
         AC_sc = strcheck[2]
 
 
-    if event == "startbutton":
+    if event == "startbutton": #送信ボタン
+        if not buttonflag: #送信ボタンがFalseのとき
+            ip = ip_check(values)
+            port = port_check(values)
+            window["paramtext"].update(ip + ":" + str(port))
 
-        ip = ip_check(values)
-        port = port_check(values)
-        window["paramtext"].update(ip + ":" + str(port))
+            print("start")
 
-        print("start")
+            startEvent(event)
 
-        startEvent(event)
+            window["startbutton"].update("送信停止")
+            window["sstext"].update("送信を開始しました")
+            buttonflag = True
 
-        window["sstext"].update("送信を開始しました")
-
-    if event == "stopbutton":
-        r.ROOP = False
-
-        window["sstext"].update("送信を停止しました")
+        else: #送信ボタンがTrueのとき
+            r.ROOP = False
+            window["startbutton"].update("送信開始")
+            window["sstext"].update("送信を停止しました")
+            buttonflag = False
 
 finishEvent(event)
