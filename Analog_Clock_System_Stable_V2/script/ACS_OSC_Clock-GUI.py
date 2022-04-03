@@ -202,6 +202,9 @@ def ip_check(values): #IPv4が有効かどうか
     #    if not is_integer(i) or int(i) > 255:
             #エラー処理
     #        return ip
+    #成功
+    #ip = ".".join(ip_list)
+    #return ip
 
 
 def port_check(values): #ポート番号が有効かどうか
