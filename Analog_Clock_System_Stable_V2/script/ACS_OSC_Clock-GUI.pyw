@@ -12,7 +12,7 @@ msg = """
 VRChat Open Sound Control 
                   時刻表示プログラム
 
-Analog Clock System Stable Version 2.1 for GUI
+Analog Clock System Stable Version 2.0.1 for GUI
 
 //////////////////////////////////////////
 """
@@ -26,13 +26,20 @@ AC_sc = "AC_sc"
 
 buttonflag = False
 
+sg.theme("Default")
+
 layout = [
     [
-        sg.Text("IP", size=(6,1)), sg.InputText("127.0.0.1", key="ip", size=(20,1))
+        sg.Text("IP", size=(8,1)), sg.InputText("127.0.0.1", key="ip", size=(15,1))
     ],
 
     [
-        sg.Text("Port", size=(6,1)), sg.InputText("9000", key="port", size=(20,1))
+        sg.Text("Port", size=(8,1)), sg.InputText("9000", key="port", size=(15,1))
+    ],
+
+    [
+        sg.Text("送信間隔", size=(8,1)), sg.InputText("1", key="interval", size=(5,1)),
+        sg.Text("秒")
     ],
 
     [
@@ -42,7 +49,7 @@ layout = [
     ],
 
     [
-        sg.Text("Advanced Settings"),
+        sg.Text("Advanced Settings---"),
         sg.Text(" 【送信するパラメータを変更します】")
     ],
 
@@ -60,14 +67,12 @@ layout = [
     ],
 
     [
-        sg.Text("", key="hh"),
-        sg.Text("", key="mh"),
-        sg.Text("", key="sc")
+        sg.Text("", key="time")
     ]
 
 ]
 
-window = sg.Window("Analog Clock System Beta 2.1 for GUI", layout)
+window = sg.Window("Analog Clock System Beta 2.0.1 for GUI", layout)
 
 class Receive():
     def __init__(self):
@@ -98,7 +103,15 @@ class Receive():
             minutes_hand = minutes / 100
             seconds_hand = seconds / 100
 
-            print("\r現在時刻:", hours, ":", minutes, ":", seconds,".", meridian,".", end="")
+            time_hh = str(hours)
+            time_mh = str(minutes)
+            time_sc = str(seconds)
+
+            time_notify = time_hh + ":" + time_mh + ":" + time_sc + "." + meridian + "."
+
+            print("\r現在時刻:", time_notify, end="")
+
+            window["time"].update("送信中の現在時刻 :" + str(time_notify))
 
             #hourを60に分割
             min_hours = math.floor(minutes / 12)
@@ -117,7 +130,7 @@ class Receive():
             client.send_message(param_mh, minutes_hand)
             client.send_message(param_sc, seconds_hand)
 
-            time.sleep(1)
+            time.sleep(interval)
 
 
     def start(self):
@@ -206,6 +219,28 @@ if __name__ == "__main__":
         finally:
             return port
 
+    def interval_check(values):
+        try:
+            interval_set = int(values["interval"])
+
+            if 1 <= interval_set <= 3600:
+                interval = interval_set
+
+            else:
+                sg.popup("エラーが発生しました！\n【送信間隔が小さい、または大きすぎます】")
+
+                window["interval"].update("1")
+                interval = 1
+
+        except ValueError:
+            sg.popup("エラーが発生しました！\n【入力された送信間隔は無効です】")
+
+            window["interval"].update("1")
+            interval = 1
+
+        finally:
+            return interval
+
 
     def str_check(values): #パラメータが有効かどうか
         if parameter_check(values):
@@ -260,10 +295,12 @@ while True:
     if event == "settings": #設定反映ボタン
         ip = ip_check(values)
         port = port_check(values)
+        interval = interval_check(values)
         window["paramtext"].update(ip + ":" + str(port))
 
         print(ip, ":", end="")
         print(port)
+        print(interval, "秒")
 
         strcheck = str_check(values)
 
@@ -276,6 +313,7 @@ while True:
         if not buttonflag: #送信ボタンがFalseのとき
             ip = ip_check(values)
             port = port_check(values)
+            interval = interval_check(values)
             window["paramtext"].update(ip + ":" + str(port))
 
             print("start")
@@ -286,10 +324,26 @@ while True:
             window["sstext"].update("送信を開始しました")
             buttonflag = True
 
+            window["ip"].update(disabled=True)
+            window["port"](disabled=True)
+            window["interval"](disabled=True)
+            window["settings"](disabled=True)
+            window["hh"](disabled=True)
+            window["mh"](disabled=True)
+            window["sc"](disabled=True)
+
         else: #送信ボタンがTrueのとき
             r.ROOP = False
             window["startbutton"].update("送信開始")
             window["sstext"].update("送信を停止しました")
             buttonflag = False
+
+            window["ip"].update(disabled=False)
+            window["port"](disabled=False)
+            window["interval"](disabled=False)
+            window["settings"](disabled=False)
+            window["hh"](disabled=False)
+            window["mh"](disabled=False)
+            window["sc"](disabled=False)
 
 finishEvent(event)
