@@ -24,6 +24,8 @@ AC_hh = "AC_hh"
 AC_mh = "AC_mh"
 AC_sc = "AC_sc"
 
+buttonflag = False
+
 sg.theme("Default")
 
 layout = [
@@ -51,11 +53,20 @@ layout = [
         sg.Text(" 【送信するパラメータを変更します】")
     ],
 
-    [sg.Text("時", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_hh", key="hh", size=(30,1))],
+    [
+        sg.Text("時", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_hh", key="hh", size=(20,1)),
+        sg.Text("AC_hh", key="text_hh", size=(20,1))
+    ],
 
-    [sg.Text("分", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_mh", key="mh", size=(30,1))],
+    [
+        sg.Text("分", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_mh", key="mh", size=(20,1)),
+        sg.Text("AC_mh", key="text_mh", size=(20,1))
+    ],
 
-    [sg.Text("秒", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_sc", key="sc", size=(30,1))],
+    [
+        sg.Text("秒", size=(2,1)), sg.Text("/avatar/parameters/"), sg.InputText("AC_sc", key="sc", size=(20,1)),
+        sg.Text("AC_sc", key="text_sc", size=(20,1))
+    ],
 
     [],
 
@@ -177,18 +188,24 @@ def ip_check(values): #IPv4が有効かどうか
         if type(ip_set) is ipaddress.IPv4Address:
             ip = str(ip_set)
 
+            return ip, True
+
         else:
             sg.popup("エラーが発生しました！\n【このIPは使用できません】")
             window["ip"].update("127.0.0.1")
             ip = "127.0.0.1"
+
+            return ip, False
 
     except ValueError:
         sg.popup("エラーが発生しました！\n【IPに使用できない値が含まれています】")
         window["ip"].update("127.0.0.1")
         ip = "127.0.0.1"
 
-    finally:
-        return ip
+        return ip, False
+
+    #finally:
+        #return ip, True
 
     #リスト形式に戻すかもしれない
     #ip_list = [
@@ -222,8 +239,9 @@ def port_check(values): #ポート番号が有効かどうか
 
         window["port"].update("9000")
         port = 9000
+        return port, False
 
-    return port
+    return port, True
 
     #後の参考のために一応残しておく
     #try:
@@ -259,11 +277,11 @@ def interval_check(values):
     if not valid_flag:
         #失敗
         sg.popup("エラーが発生しました！\n【送信間隔に使用できない値が含まれています】")
-
         window["interval"].update("1")
         interval = 1
+        return interval, False
 
-    return interval
+    return interval, True
 
 
 def str_check(values): #パラメータが有効かどうか
@@ -312,8 +330,6 @@ if __name__ == "__main__":
         event, values = window.read()
         print(event, values)
 
-        buttonflag = False
-
         if event is None:
             break
 
@@ -321,9 +337,9 @@ if __name__ == "__main__":
             break
 
         elif event == "settings": #設定反映ボタン
-            ip = ip_check(values)
-            port = port_check(values)
-            interval = interval_check(values)
+            ip = ip_check(values)[0]
+            port = port_check(values)[0]
+            interval = interval_check(values)[0]
             window["paramtext"].update(ip + ":" + str(port))
 
             print(ip, ":", end="")
@@ -336,29 +352,45 @@ if __name__ == "__main__":
             AC_mh = strcheck[1]
             AC_sc = strcheck[2]
 
+            window["text_hh"].update(AC_hh)
+            window["text_mh"].update(AC_mh)
+            window["text_sc"].update(AC_sc)
+
 
         elif event == "startbutton": #送信ボタン
             if not buttonflag: #送信ボタンがFalseのとき
-                ip = ip_check(values)
-                port = port_check(values)
-                interval = interval_check(values)
-                window["paramtext"].update(ip + ":" + str(port))
+                ip_tuple = ip_check(values)
+                port_tuple = port_check(values)
+                interval_tuple = interval_check(values)
 
-                print("start")
+                ip_flag = ip_tuple[1]
+                port_flag = port_tuple[1]
+                interval_flag = interval_tuple[1]
 
-                startEvent(event)
+                if all([ip_flag, port_flag, interval_flag]):
 
-                window["startbutton"].update("送信停止")
-                window["sstext"].update("送信を開始しました")
-                buttonflag = True
+                    ip = ip_tuple[0]
+                    port = port_tuple[0]
+                    interval = interval_tuple[0]
 
-                window["ip"].update(disabled=True)
-                window["port"].update(disabled=True)
-                window["interval"].update(disabled=True)
-                window["settings"].update(disabled=True)
-                window["hh"].update(disabled=True)
-                window["mh"].update(disabled=True)
-                window["sc"].update(disabled=True)
+                    window["paramtext"].update(ip + ":" + str(port))
+
+                    print("start")
+
+                    startEvent(event)
+
+                    window["startbutton"].update("送信停止")
+                    window["sstext"].update("送信を開始しました")
+                    buttonflag = True
+
+                    #入力部ロック
+                    window["ip"].update(disabled=True)
+                    window["port"].update(disabled=True)
+                    window["interval"].update(disabled=True)
+                    window["settings"].update(disabled=True)
+                    window["hh"].update(disabled=True)
+                    window["mh"].update(disabled=True)
+                    window["sc"].update(disabled=True)
 
             else: #送信ボタンがTrueのとき
                 r.roop = False
@@ -366,6 +398,7 @@ if __name__ == "__main__":
                 window["sstext"].update("送信を停止しました")
                 buttonflag = False
 
+                #入力部ロック解除
                 window["ip"].update(disabled=False)
                 window["port"].update(disabled=False)
                 window["interval"].update(disabled=False)
