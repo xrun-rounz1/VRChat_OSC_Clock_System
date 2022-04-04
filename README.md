@@ -20,7 +20,7 @@
 
 ## Pythonを使用する場合
 
-* Python 3.8.2
+* Python 3.8以上
 * python-osc 1.8.0
 
 ```bash
