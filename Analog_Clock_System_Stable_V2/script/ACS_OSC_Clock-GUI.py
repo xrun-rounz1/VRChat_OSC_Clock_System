@@ -188,21 +188,21 @@ def ip_check(values): #IPv4が有効かどうか
         if type(ip_set) is ipaddress.IPv4Address:
             ip = str(ip_set)
 
-            return ip, True
+            return ip
 
         else:
             sg.popup("エラーが発生しました！\n【このIPは使用できません】")
             window["ip"].update("127.0.0.1")
             ip = "127.0.0.1"
 
-            return ip, False
+            return None
 
     except ValueError:
         sg.popup("エラーが発生しました！\n【IPに使用できない値が含まれています】")
         window["ip"].update("127.0.0.1")
         ip = "127.0.0.1"
 
-        return ip, False
+        return None
 
     #finally:
         #return ip, True
@@ -239,9 +239,9 @@ def port_check(values): #ポート番号が有効かどうか
 
         window["port"].update("9000")
         port = 9000
-        return port, False
+        return None
 
-    return port, True
+    return port
 
     #後の参考のために一応残しておく
     #try:
@@ -279,9 +279,9 @@ def interval_check(values):
         sg.popup("エラーが発生しました！\n【送信間隔に使用できない値が含まれています】")
         window["interval"].update("1")
         interval = 1
-        return interval, False
+        return None
 
-    return interval, True
+    return interval
 
 
 def str_check(values): #パラメータが有効かどうか
@@ -337,41 +337,35 @@ if __name__ == "__main__":
             break
 
         elif event == "settings": #設定反映ボタン
-            ip = ip_check(values)[0]
-            port = port_check(values)[0]
-            interval = interval_check(values)[0]
-            window["paramtext"].update(ip + ":" + str(port))
+            ip = ip_check(values)
+            port = port_check(values)
+            interval = interval_check(values)
 
-            print(ip, ":", end="")
-            print(port)
-            print(interval, "秒")
+            if all([ip, port, interval]):
+                window["paramtext"].update(ip + ":" + str(port))
 
-            strcheck = str_check(values)
+                print(ip, ":", end="")
+                print(port)
+                print(interval, "秒")
 
-            AC_hh = strcheck[0]
-            AC_mh = strcheck[1]
-            AC_sc = strcheck[2]
+                strcheck = str_check(values)
 
-            window["text_hh"].update(AC_hh)
-            window["text_mh"].update(AC_mh)
-            window["text_sc"].update(AC_sc)
+                AC_hh = strcheck[0]
+                AC_mh = strcheck[1]
+                AC_sc = strcheck[2]
+
+                window["text_hh"].update(AC_hh)
+                window["text_mh"].update(AC_mh)
+                window["text_sc"].update(AC_sc)
 
 
         elif event == "startbutton": #送信ボタン
             if not buttonflag: #送信ボタンがFalseのとき
-                ip_tuple = ip_check(values)
-                port_tuple = port_check(values)
-                interval_tuple = interval_check(values)
+                ip = ip_check(values)
+                port = port_check(values)
+                interval = interval_check(values)
 
-                ip_flag = ip_tuple[1]
-                port_flag = port_tuple[1]
-                interval_flag = interval_tuple[1]
-
-                if all([ip_flag, port_flag, interval_flag]):
-
-                    ip = ip_tuple[0]
-                    port = port_tuple[0]
-                    interval = interval_tuple[0]
+                if all([ip, port, interval]):
 
                     window["paramtext"].update(ip + ":" + str(port))
 
